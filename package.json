@@ -20,6 +20,7 @@
   },
   "homepage": "https://gitlab.com/trpg7/conoha_notification#readme",
   "devDependencies": {
+    "@slack/web-api": "^5.2.0",
     "@typescript-eslint/eslint-plugin": "^2.3.2",
     "@typescript-eslint/parser": "^2.3.2",
     "eslint": "^6.1.0",
