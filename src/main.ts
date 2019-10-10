@@ -59,33 +59,39 @@ const getCurrentBillingInvoive = (billingResponse: BillingResponse): BillingInvo
 };
 
 const run = async (): Promise<void> => {
-  const conohaTokenResult = await conoha.getToken();
-  const conohaTokenResponse: ConohaTokenResponse = conohaTokenResult.data;
-  const conohaToken = conohaTokenResponse.access.token.id;
+  try {
+    const conohaTokenResult = await conoha.getToken();
+    const conohaTokenResponse: ConohaTokenResponse = conohaTokenResult.data;
+    const conohaToken = conohaTokenResponse.access.token.id;
 
-  const paymentResult = await conoha.getPayment(conohaToken);
-  const paymentResponse: PaymentResponse = paymentResult.data;
-  const payment = paymentResponse.payment_summary.total_deposit_amount;
+    const paymentResult = await conoha.getPayment(conohaToken);
+    const paymentResponse: PaymentResponse = paymentResult.data;
+    const payment = paymentResponse.payment_summary.total_deposit_amount;
 
-  const billingResult = await conoha.getBilling(conohaToken);
-  const billingInvoice = getCurrentBillingInvoive(billingResult.data);
+    const billingResult = await conoha.getBilling(conohaToken);
+    const billingInvoice = getCurrentBillingInvoive(billingResult.data);
 
-  const bill = billingInvoice.bill_plus_tax;
+    const bill = billingInvoice.bill_plus_tax;
 
-  const balance = payment - bill;
+    const balance = payment - bill;
 
-  const state = getState(balance);
-  const config = slackConfig[state];
+    const state = getState(balance);
+    const config = slackConfig[state];
 
-  const channel = 'server_management';
-  const { text } = config;
-  const attachments = [new Attachment(config.color, [new Field('残高', `¥ ${balance}`)])];
-  const { iconUrl } = config;
-  const username = 'Conoha残高お知らせ';
+    const channel = 'server_management';
+    const { text } = config;
+    const attachments = [new Attachment(config.color, [new Field('残高', `¥ ${balance}`)])];
+    const { iconUrl } = config;
+    const username = 'Conoha残高お知らせ';
 
-  const slackPostParams = new SlackPostParam(channel, text, attachments, iconUrl, username);
+    const slackPostParams = new SlackPostParam(channel, text, attachments, iconUrl, username);
 
-  await slack.postMessage(slackPostParams);
+    await slack.postMessage(slackPostParams);
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error(err);
+    process.exit(-1);
+  }
 };
 
 run();
