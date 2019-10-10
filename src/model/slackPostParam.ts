@@ -1,5 +1,4 @@
 import Attachment from "./attachment";
-import { MessageAttachment } from "@slack/types";
 
 export default class SlackPostParam {
   private channel: string;
@@ -32,8 +31,8 @@ export default class SlackPostParam {
     return this.text;
   }
 
-  getAttachements(): Array<MessageAttachment> {
-    return JSON.parse(JSON.stringify(this.attachments));
+  getAttachements(): string {
+    return JSON.stringify(this.attachments);
   }
 
   getAsUser(): boolean {
