@@ -1,0 +1,12 @@
+version: "3"
+services:
+  node:
+    build: docker
+    working_dir: "/usr/src/app"
+    environment:
+      - NODE_SLACK_TOKEN
+      - NODE_CONOHA_PASS
+      - NODE_CONOHA_TENANT_ID
+      - NODE_CONOHA_USERNAME
+    volumes:
+      - ./:/usr/src/app
