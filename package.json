@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "parcel build --target node src/main.ts",
-    "run": "node dist/main.js"
+    "run": "NODE_SLACK_TOKEN=$SLACK_TOKEN NODE_CONOHA_USERNAME=$CONOHA_USERNAME NODE_CONOHA_TENANT_ID=$CONOHA_TENANT_ID NODE_CONOHA_PASS=$CONOHA_PASS node dist/main.js"
   },
   "repository": {
     "type": "git",
